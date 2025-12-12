@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-import { saveLead } from '../lib/supabaseClient';
+import { supabase } from '../lib/supabase';
 
 interface ChatbotLeadFormProps {
   serviceType: string;
@@ -66,27 +66,32 @@ export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: Chat
     setIsSubmitting(true);
 
     try {
-      const leadData = {
-        full_name: formData.name.trim(),
-        company_name: formData.companyName.trim(),
-        email: formData.email.trim().toLowerCase(),
-        service: serviceType,
-        budget: parseBudget(budget),
-        message: formData.projectDetails.trim(),
-      };
+      const { error: submitError } = await supabase.from('leads').insert([
+        {
+          full_name: formData.name.trim(),
+          company_name: formData.companyName.trim(),
+          email: formData.email.trim().toLowerCase(),
+          service: serviceType,
+          budget: parseBudget(budget),
+          message: formData.projectDetails.trim(),
+        },
+      ]);
 
-      await saveLead(leadData);
+      if (submitError) {
+        if (submitError.code === '23505' || submitError.message.includes('duplicate') || submitError.message.includes('unique')) {
+          setError('This email has already been submitted. Please use a different email or contact us directly.');
+        } else {
+          console.error('Error submitting lead:', submitError);
+          setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
+        }
+        return;
+      }
 
       setFormData({ name: '', companyName: '', email: '', projectDetails: '' });
       onSuccess();
     } catch (err: any) {
       console.error('Error submitting lead:', err);
-
-      if (err.message?.includes('already been submitted')) {
-        setError('This email has already been submitted. Please use a different email or contact us directly.');
-      } else {
-        setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
-      }
+      setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
     } finally {
       setIsSubmitting(false);
     }
