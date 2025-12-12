@@ -43,16 +43,6 @@ export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: Chat
     return null;
   };
 
-  const parseBudget = (budgetString?: string): number | null => {
-    if (!budgetString) return null;
-
-    const numbers = budgetString.match(/\d+,?\d*/g);
-    if (!numbers || numbers.length === 0) return null;
-
-    const lastNumber = numbers[numbers.length - 1].replace(/,/g, '');
-    return parseInt(lastNumber, 10);
-  };
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
@@ -66,31 +56,27 @@ export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: Chat
     setIsSubmitting(true);
 
     try {
-      const { error: submitError } = await supabase.from('leads').insert([
+      const { error: submitError } = await supabase.from('contact_submissions').insert([
         {
-          full_name: formData.name.trim(),
-          company_name: formData.companyName.trim(),
+          name: formData.name.trim(),
+          company: formData.companyName.trim(),
           email: formData.email.trim().toLowerCase(),
           service: serviceType,
-          budget: parseBudget(budget),
+          budget: budget || null,
           message: formData.projectDetails.trim(),
         },
       ]);
 
       if (submitError) {
-        if (submitError.code === '23505' || submitError.message.includes('duplicate') || submitError.message.includes('unique')) {
-          setError('This email has already been submitted. Please use a different email or contact us directly.');
-        } else {
-          console.error('Error submitting lead:', submitError);
-          setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
-        }
+        console.error('Error submitting form:', submitError);
+        setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
         return;
       }
 
       setFormData({ name: '', companyName: '', email: '', projectDetails: '' });
       onSuccess();
     } catch (err: any) {
-      console.error('Error submitting lead:', err);
+      console.error('Error submitting form:', err);
       setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
     } finally {
       setIsSubmitting(false);
