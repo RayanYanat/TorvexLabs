@@ -43,6 +43,16 @@ export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: Chat
     return null;
   };
 
+  const parseBudget = (budgetString?: string): number | null => {
+    if (!budgetString) return null;
+
+    const numbers = budgetString.match(/\d+,?\d*/g);
+    if (!numbers || numbers.length === 0) return null;
+
+    const lastNumber = numbers[numbers.length - 1].replace(/,/g, '');
+    return parseInt(lastNumber, 10);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
@@ -61,7 +71,7 @@ export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: Chat
         company_name: formData.companyName.trim(),
         email: formData.email.trim().toLowerCase(),
         service: serviceType,
-        budget: budget || '',
+        budget: parseBudget(budget),
         message: formData.projectDetails.trim(),
       };
 
