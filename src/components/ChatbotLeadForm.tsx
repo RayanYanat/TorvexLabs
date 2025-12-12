@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { saveLead } from '../lib/supabaseClient';
 
 interface ChatbotLeadFormProps {
   serviceType: string;
@@ -12,37 +12,71 @@ interface ChatbotLeadFormProps {
 export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: ChatbotLeadFormProps) {
   const [formData, setFormData] = useState({
     name: '',
+    companyName: '',
     email: '',
     projectDetails: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = (): string | null => {
+    if (!formData.name.trim()) {
+      return 'Please enter your full name';
+    }
+    if (!formData.companyName.trim()) {
+      return 'Please enter your company name';
+    }
+    if (!formData.email.trim()) {
+      return 'Please enter your email address';
+    }
+    if (!validateEmail(formData.email)) {
+      return 'Please enter a valid email address';
+    }
+    if (!formData.projectDetails.trim()) {
+      return 'Please provide project details';
+    }
+    return null;
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const { error: submitError } = await supabase
-        .from('chatbot_leads')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            service_type: serviceType,
-            project_details: formData.projectDetails,
-            budget: budget || null,
-          },
-        ]);
+      const leadData = {
+        full_name: formData.name.trim(),
+        company_name: formData.companyName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        service: serviceType,
+        budget: budget || '',
+        message: formData.projectDetails.trim(),
+      };
 
-      if (submitError) throw submitError;
+      await saveLead(leadData);
 
-      setFormData({ name: '', email: '', projectDetails: '' });
+      setFormData({ name: '', companyName: '', email: '', projectDetails: '' });
       onSuccess();
-    } catch (err) {
-      console.error('Error submitting form:', err);
-      setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
+    } catch (err: any) {
+      console.error('Error submitting lead:', err);
+
+      if (err.message?.includes('already been submitted')) {
+        setError('This email has already been submitted. Please use a different email or contact us directly.');
+      } else {
+        setError('Failed to submit. Please try again or email us directly at contact.torvexlabs@gmail.com');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -62,6 +96,21 @@ export function ChatbotLeadForm({ serviceType, budget, onSuccess, onBack }: Chat
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm"
           placeholder="John Doe"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="chatbot-company" className="block text-sm font-medium text-gray-700 mb-1">
+          Company Name *
+        </label>
+        <input
+          type="text"
+          id="chatbot-company"
+          required
+          value={formData.companyName}
+          onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm"
+          placeholder="Acme Inc."
         />
       </div>
 
