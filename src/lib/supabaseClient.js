@@ -10,16 +10,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
 export const saveLead = async (leadData) => {
-  const existingLead = await supabaseClient
-    .from('leads')
-    .select('email')
-    .eq('email', leadData.email)
-    .maybeSingle();
-
-  if (existingLead.data) {
-    throw new Error('This email has already been submitted');
-  }
-
   const { data, error } = await supabaseClient
     .from('leads')
     .insert([leadData])
@@ -27,6 +17,9 @@ export const saveLead = async (leadData) => {
     .single();
 
   if (error) {
+    if (error.code === '23505' || error.message.includes('duplicate') || error.message.includes('unique')) {
+      throw new Error('This email has already been submitted');
+    }
     throw new Error(error.message || 'Failed to save lead');
   }
 
