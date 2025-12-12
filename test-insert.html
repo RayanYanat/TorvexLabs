@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Supabase Insert</title>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://dvwdzdegrfvgmokbkgtv.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2d2R6ZGVncmZ2Z21va2JrZ3R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NTg2NTgsImV4cCI6MjA4MTEzNDY1OH0.vnpJ9rqfy8lEuf__wv3XU2mS2YXkE0MWQjNKLmG7F58';
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    async function testInsert() {
+      console.log('Testing insert...');
+
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([{
+          full_name: 'Test User',
+          company_name: 'Test Company',
+          email: 'testuser@example.com',
+          service: 'website',
+          budget: '$1,000',
+          message: 'Test message'
+        }])
+        .select();
+
+      if (error) {
+        console.error('Error:', error);
+        document.body.innerHTML = `<h1>Error</h1><pre>${JSON.stringify(error, null, 2)}</pre>`;
+      } else {
+        console.log('Success:', data);
+        document.body.innerHTML = `<h1>Success!</h1><pre>${JSON.stringify(data, null, 2)}</pre>`;
+      }
+    }
+
+    testInsert();
+  </script>
+</head>
+<body>
+  <h1>Testing...</h1>
+</body>
+</html>
