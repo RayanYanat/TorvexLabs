@@ -73,10 +73,10 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Email Us</h3>
                     <a
-                      href="mailto:contact.torvexlabs@gmail.com"
+                      href="mailto:rayan@torvexlabs.com"
                       className="text-blue-600 hover:text-blue-700 transition-colors duration-300"
                     >
-                      contact.torvexlabs@gmail.com
+                      rayan@torvexlabs.com
                     </a>
                   </div>
                 </div>

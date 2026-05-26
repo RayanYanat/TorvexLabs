@@ -10,7 +10,6 @@ export default function Header() {
     { name: 'Home', page: 'home' as const },
     { name: 'Services', page: 'services' as const },
     { name: 'Portfolio', page: 'portfolio' as const },
-    { name: 'Blog', page: 'blog' as const },
     { name: 'Contact', page: 'contact' as const },
   ];
 

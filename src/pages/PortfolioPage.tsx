@@ -20,7 +20,7 @@ export default function PortfolioPage() {
       image: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200',
       goal: 'Help a small business convert more visitors into clients and reduce time spent on manual follow-ups.',
       solution: 'Built a modern, conversion-optimized landing page integrated with a CRM system (HubSpot). Configured automated email and WhatsApp follow-up sequences triggered by user actions. Created custom workflows for lead scoring and prioritization.',
-      result: '35% increase in recontacted leads within the first 60 days, saving 12+ hours per week on manual follow-ups.',
+      result: 'Significant increase in lead recontact rate, saving hours per week on manual follow-ups.',
     },
     {
       title: 'AI Support Assistant for Customer Service',
@@ -29,7 +29,7 @@ export default function PortfolioPage() {
       image: 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=1200',
       goal: 'Reduce time spent answering repetitive customer questions like order status, shipping info, and FAQs.',
       solution: 'Developed a custom AI assistant using OpenAI API trained on company FAQs and support documentation. Connected to WhatsApp Business API for instant customer responses. Implemented fallback routing to human agents for complex queries.',
-      result: '40% reduction in simple support tickets, with average response time dropping from 2 hours to under 2 minutes.',
+      result: 'Major reduction in support ticket volume, with response times dropping from hours to minutes.',
     },
     {
       title: 'Simple Inventory Management Mobile App',
@@ -38,7 +38,7 @@ export default function PortfolioPage() {
       image: 'https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=1200',
       goal: 'Help a local retail shop update inventory efficiently and reduce stock discrepancies.',
       solution: 'Created a native Android app with barcode scanning capabilities for quick product lookup and updates. Implemented real-time database synchronization using Firebase. Built a simple web dashboard for owners to monitor inventory from anywhere.',
-      result: 'Stock errors reduced by 78%, inventory updates now take seconds instead of minutes, improving daily operations.',
+      result: 'Stock errors drastically reduced, inventory updates now take seconds instead of minutes.',
     },
     {
       title: 'Modern Company Website + SEO Optimization',
@@ -47,7 +47,7 @@ export default function PortfolioPage() {
       image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=1200',
       goal: 'Improve online credibility and visibility for a local business struggling with outdated web presence.',
       solution: 'Designed and built a clean, responsive website optimized for speed and SEO. Implemented proper meta tags, structured data, and semantic HTML. Connected contact forms to CRM and email notifications. Optimized images and added caching strategies.',
-      result: '+27% increase in organic search visibility in 90 days, 3x more qualified contact form submissions.',
+      result: 'Improved search visibility and a noticeable increase in qualified contact form submissions.',
     },
   ];
 

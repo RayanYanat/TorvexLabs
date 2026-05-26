@@ -127,11 +127,11 @@ export default function HomePage() {
               </p>
               <div className="space-y-4">
                 {[
-                  'Expert team with 10+ years of experience',
+                  'Hands-on founder who builds every project personally',
                   'Customized solutions tailored to your needs',
-                  'Proven track record of successful projects',
+                  'Fast turnaround — weeks, not months',
                   'Ongoing support and maintenance',
-                  'Competitive pricing and flexible packages',
+                  'Transparent pricing, no hidden fees',
                 ].map((benefit, index) => (
                   <div
                     key={index}

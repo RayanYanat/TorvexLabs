@@ -55,11 +55,6 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button onClick={() => navigateTo('blog')} className="hover:text-blue-400 hover:translate-x-1 transition-all duration-300 inline-block">
-                  Blog
-                </button>
-              </li>
-              <li>
                 <button onClick={() => navigateTo('contact')} className="hover:text-blue-400 hover:translate-x-1 transition-all duration-300 inline-block">
                   Contact
                 </button>
@@ -81,7 +76,7 @@ export default function Footer() {
               </a>
             </div>
             <p className="text-gray-400 text-sm mt-4 hover:text-blue-400 transition-colors duration-300">
-              contact.torvexlabs@gmail.com
+              rayan@torvexlabs.com
             </p>
           </div>
         </div>
